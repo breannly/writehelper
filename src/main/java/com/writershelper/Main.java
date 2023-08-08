@@ -1,19 +1,130 @@
 package com.writershelper;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import com.writershelper.utils.ConsoleReader;
+import com.writershelper.view.label.LabelView;
+import com.writershelper.view.label.LabelViewImpl;
+import com.writershelper.view.post.PostView;
+import com.writershelper.view.post.PostViewImpl;
+import com.writershelper.view.writer.WriterView;
+import com.writershelper.view.writer.WriterViewImpl;
+
 public class Main {
+
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        WriterView writerView = new WriterViewImpl();
+        PostView postView = new PostViewImpl();
+        LabelView labelView = new LabelViewImpl();
+        boolean isRunning = true;
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        System.out.println("Welcome to the WriterHelper!");
+        while (isRunning) {
+            System.out.println("\nSelect an action:");
+            System.out.println("1. Manage Writers");
+            System.out.println("2. Manage Posts");
+            System.out.println("3. Manage Labels");
+            System.out.println("4. Exit");
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+            try {
+                int choice = Integer.parseInt(ConsoleReader.read());
+
+                switch (choice) {
+                    case 1 -> runWriterMenu(writerView);
+                    case 2 -> runPostMenu(postView);
+                    case 3 -> runLabelMenu(labelView);
+                    case 4 -> {
+                        isRunning = false;
+                        System.out.println("Goodbye!");
+                    }
+                    default -> System.out.println("Invalid choice. Please choose again.");
+                }
+            } catch (Exception e) {
+                System.err.println("Something got wrong... Try again!");
+            }
         }
     }
+
+    private static void runWriterMenu(WriterView writerView) {
+        boolean isRunning = true;
+
+        while (isRunning) {
+            System.out.println("\nSelect an action:");
+            System.out.println("1. Create writer");
+            System.out.println("2. Get writer by id");
+            System.out.println("3. Update writer");
+            System.out.println("4. Delete writer");
+            System.out.println("5. Exit");
+
+            try {
+                int choice = Integer.parseInt(ConsoleReader.read());
+
+                switch (choice) {
+                    case 1 -> writerView.create();
+                    case 2 -> writerView.get();
+                    case 3 -> writerView.update();
+                    case 4 -> writerView.delete();
+                    case 5 -> isRunning = false;
+                    default -> System.out.println("Invalid choice. Please choose again.");
+                }
+            } catch (Exception e) {
+                System.err.println("Something got wrong... Try again!");
+            }
+        }
+    }
+
+    private static void runPostMenu(PostView postView) {
+        boolean isRunning = true;
+
+        while (isRunning) {
+            System.out.println("\nSelect an action:");
+            System.out.println("1. Create post");
+            System.out.println("2. Get post by id");
+            System.out.println("3. Update post");
+            System.out.println("4. Delete post");
+            System.out.println("5. Exit");
+
+            try {
+                int choice = Integer.parseInt(ConsoleReader.read());
+
+                switch (choice) {
+                    case 1 -> postView.create();
+                    case 2 -> postView.get();
+                    case 3 -> postView.update();
+                    case 4 -> postView.delete();
+                    case 5 -> isRunning = false;
+                    default -> System.out.println("Invalid choice. Please choose again.");
+                }
+            } catch (Exception e) {
+                System.err.println("Something got wrong... Try again!");
+            }
+        }
+    }
+
+    private static void runLabelMenu(LabelView labelView) {
+        boolean isRunning = true;
+
+        while (isRunning) {
+            System.out.println("\nSelect an action:");
+            System.out.println("1. Create label");
+            System.out.println("2. Get label by id");
+            System.out.println("3. Update label");
+            System.out.println("4. Delete label");
+            System.out.println("5. Exit");
+
+            try {
+                int choice = Integer.parseInt(ConsoleReader.read());
+
+                switch (choice) {
+                    case 1 -> labelView.create();
+                    case 2 -> labelView.get();
+                    case 3 -> labelView.update();
+                    case 4 -> labelView.delete();
+                    case 5 -> isRunning = false;
+                    default -> System.out.println("Invalid choice. Please choose again.");
+                }
+            } catch (Exception e) {
+                System.err.println("Something got wrong... Try again!");
+            }
+        }
+    }
+
 }

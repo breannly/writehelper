@@ -1,6 +1,6 @@
 package com.writershelper.model;
 
-public enum PostStatus {
+public enum Status {
 
     ACTIVE,
     UNDER_REVIEW,
