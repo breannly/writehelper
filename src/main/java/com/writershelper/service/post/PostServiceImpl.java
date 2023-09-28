@@ -2,14 +2,18 @@ package com.writershelper.service.post;
 
 import com.writershelper.model.Post;
 import com.writershelper.model.Status;
-import com.writershelper.repository.post.JdbcPostRepositoryImpl;
 import com.writershelper.repository.post.PostRepository;
 
 import java.util.Optional;
 
 public class PostServiceImpl implements PostService {
 
-    private final PostRepository postRepository = new JdbcPostRepositoryImpl();
+    private final PostRepository postRepository;
+
+    public PostServiceImpl(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
+
     @Override
     public Post get(Long id) {
         Optional<Post> post = postRepository.get(id);

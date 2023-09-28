@@ -1,5 +1,6 @@
 package com.writershelper.controller;
 
+import com.writershelper.ApplicationManager;
 import com.writershelper.dto.label.LabelCreateDto;
 import com.writershelper.dto.label.LabelUpdateDto;
 import com.writershelper.exception.ItemNotFoundException;
@@ -8,11 +9,14 @@ import com.writershelper.mapper.LabelMapper;
 import com.writershelper.model.Label;
 import com.writershelper.model.Status;
 import com.writershelper.service.label.LabelService;
-import com.writershelper.service.label.LabelServiceImpl;
 
 public class LabelController {
 
-    private final LabelService labelService = new LabelServiceImpl();
+    private final LabelService labelService;
+
+    public LabelController(LabelService labelService) {
+        this.labelService = labelService;
+    }
 
     public Label create(LabelCreateDto request) {
         if (request.labelName() == null || request.labelName().isBlank()) {

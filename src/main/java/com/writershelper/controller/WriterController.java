@@ -1,5 +1,6 @@
 package com.writershelper.controller;
 
+import com.writershelper.ApplicationManager;
 import com.writershelper.dto.writer.WriterCreateDto;
 import com.writershelper.dto.writer.WriterUpdateDto;
 import com.writershelper.exception.ItemNotFoundException;
@@ -12,7 +13,11 @@ import com.writershelper.service.writer.WriterServiceImpl;
 
 public class WriterController {
 
-    private final WriterService writerService = new WriterServiceImpl();
+    private final WriterService writerService;
+
+    public WriterController(WriterService writerService) {
+        this.writerService = writerService;
+    }
 
     public Writer create(WriterCreateDto request) {
         if (request.firstName() == null || request.firstName().isBlank()) {

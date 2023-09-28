@@ -2,14 +2,17 @@ package com.writershelper.service.label;
 
 import com.writershelper.model.Label;
 import com.writershelper.model.Status;
-import com.writershelper.repository.label.JdbcLabelRepositoryImpl;
 import com.writershelper.repository.label.LabelRepository;
 
 import java.util.Optional;
 
 public class LabelServiceImpl implements LabelService {
 
-    private final LabelRepository labelRepository = new JdbcLabelRepositoryImpl();
+    private final LabelRepository labelRepository;
+
+    public LabelServiceImpl(LabelRepository labelRepository) {
+        this.labelRepository = labelRepository;
+    }
 
     @Override
     public Label get(Long id) {

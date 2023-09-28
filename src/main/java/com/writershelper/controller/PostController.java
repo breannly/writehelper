@@ -1,5 +1,6 @@
 package com.writershelper.controller;
 
+import com.writershelper.ApplicationManager;
 import com.writershelper.dto.post.PostCreateDto;
 import com.writershelper.dto.post.PostUpdateDto;
 import com.writershelper.exception.ItemNotFoundException;
@@ -8,13 +9,16 @@ import com.writershelper.mapper.PostMapper;
 import com.writershelper.model.Post;
 import com.writershelper.model.Status;
 import com.writershelper.service.post.PostService;
-import com.writershelper.service.post.PostServiceImpl;
 
 import java.util.Date;
 
 public class PostController {
 
-    private final PostService postService = new PostServiceImpl();
+    private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     public Post create(PostCreateDto request) {
         if (request.content() == null || request.content().isBlank()) {

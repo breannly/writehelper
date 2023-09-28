@@ -1,20 +1,18 @@
 package com.writershelper.view.common;
 
 import com.google.common.base.Throwables;
+import com.writershelper.ApplicationManager;
 import com.writershelper.utils.ConsoleReader;
 import com.writershelper.view.label.LabelView;
-import com.writershelper.view.label.LabelViewImpl;
 import com.writershelper.view.post.PostView;
-import com.writershelper.view.post.PostViewImpl;
 import com.writershelper.view.writer.WriterView;
-import com.writershelper.view.writer.WriterViewImpl;
 
 public class CommonView {
 
     public static void run() {
-        WriterView writerView = new WriterViewImpl();
-        PostView postView = new PostViewImpl();
-        LabelView labelView = new LabelViewImpl();
+        WriterView writerView = ApplicationManager.getWriterView();
+        PostView postView = ApplicationManager.getPostView();
+        LabelView labelView = ApplicationManager.getLabelView();
         boolean isRunning = true;
 
         System.out.println("Welcome to the WriterHelper!");

@@ -12,7 +12,11 @@ import java.io.IOException;
 
 public class WriterViewImpl implements WriterView {
 
-    private final WriterController writerController = new WriterController();
+    private final WriterController writerController;
+
+    public WriterViewImpl(WriterController writerController) {
+        this.writerController = writerController;
+    }
 
     @Override
     public void create() {

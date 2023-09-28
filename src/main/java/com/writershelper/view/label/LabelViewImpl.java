@@ -12,7 +12,11 @@ import java.io.IOException;
 
 public class LabelViewImpl implements LabelView {
 
-    private final LabelController labelController = new LabelController();
+    private final LabelController labelController;
+
+    public LabelViewImpl(LabelController labelController) {
+        this.labelController = labelController;
+    }
 
     @Override
     public void create() {
@@ -27,6 +31,7 @@ public class LabelViewImpl implements LabelView {
             Label savedLabel = labelController.create(labelCreateDto);
 
             System.out.println("INFO: label was successfully saved with id: " + savedLabel.getId());
+            System.out.println(savedLabel);
         } catch (NumberFormatException e) {
             System.err.println("ERROR: Invalid post ID format");
         } catch (IOException e) {
@@ -64,8 +69,10 @@ public class LabelViewImpl implements LabelView {
             String name = ConsoleReader.read();
 
             LabelUpdateDto labelUpdateDto = new LabelUpdateDto(labelId, name);
-            labelController.update(labelUpdateDto);
+            Label updatedLabel = labelController.update(labelUpdateDto);
+
             System.out.println("INFO: label was successfully updated");
+            System.out.println(updatedLabel);
         } catch (NumberFormatException e) {
             System.err.println("ERROR: Invalid post ID format");
         } catch (IOException e) {

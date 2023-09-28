@@ -12,7 +12,11 @@ import java.io.IOException;
 
 public class PostViewImpl implements PostView {
 
-    private final PostController postController = new PostController();
+    private final PostController postController;
+
+    public PostViewImpl(PostController postController) {
+        this.postController = postController;
+    }
 
     @Override
     public void create() {
@@ -27,6 +31,7 @@ public class PostViewImpl implements PostView {
             Post savedPost = postController.create(postCreateDto);
 
             System.out.println("INFO: post was successfully saved with id: " + savedPost.getId());
+            System.out.println(savedPost);
         } catch (NumberFormatException e) {
             System.err.println("ERROR: Invalid post ID format");
         } catch (IOException e) {
@@ -65,8 +70,10 @@ public class PostViewImpl implements PostView {
             String content = ConsoleReader.read();
 
             PostUpdateDto postUpdateDto = new PostUpdateDto(postId, content);
-            postController.update(postUpdateDto);
+            Post updatedPost = postController.update(postUpdateDto);
+
             System.out.println("INFO: post was successfully updated");
+            System.out.println(updatedPost);
         } catch (NumberFormatException e) {
             System.err.println("ERROR: Invalid post ID format");
         } catch (IOException e) {
