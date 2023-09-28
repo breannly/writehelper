@@ -45,9 +45,7 @@ public class PostViewImpl implements PostView {
 
             Post post = postController.get(postId);
 
-            System.out.println("Post's content is " + post.getContent());
-            System.out.println("Post's was created at " + post.getCreated());
-            System.out.println("Post's was last updated at " + post.getUpdated());
+            System.out.println(post);
         } catch (NumberFormatException e) {
             System.err.println("ERROR: Invalid post ID format");
         } catch (IOException e) {
@@ -84,8 +82,10 @@ public class PostViewImpl implements PostView {
             System.out.println("Enter the post's id: ");
             Long postId = Long.parseLong(ConsoleReader.read());
 
-            postController.delete(postId);
+            Post deletedPost = postController.delete(postId);
+
             System.out.println("INFO: post was successfully deleted");
+            System.out.println(deletedPost);
         } catch (NumberFormatException e) {
             System.err.println("ERROR: Invalid post ID format");
         } catch (IOException e) {

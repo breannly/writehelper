@@ -44,7 +44,7 @@ public class LabelViewImpl implements LabelView {
 
             Label label = labelController.get(labelId);
 
-            System.out.println("Label's name is " + label.getName());
+            System.out.println(label);
         } catch (NumberFormatException e) {
             System.err.println("ERROR: Invalid post ID format");
         } catch (IOException e) {
@@ -81,8 +81,10 @@ public class LabelViewImpl implements LabelView {
             System.out.println("Enter the label's id: ");
             Long labelId = Long.parseLong(ConsoleReader.read());
 
-            labelController.delete(labelId);
+            Label deletedLabel = labelController.delete(labelId);
+
             System.out.println("INFO: label was successfully deleted");
+            System.out.println(deletedLabel);
         } catch (NumberFormatException e) {
             System.err.println("ERROR: Invalid post ID format");
         } catch (IOException e) {
