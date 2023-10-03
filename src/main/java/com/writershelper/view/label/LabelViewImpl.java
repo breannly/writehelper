@@ -24,10 +24,7 @@ public class LabelViewImpl implements LabelView {
             System.out.println("Enter the label's name: ");
             String name = ConsoleReader.read();
 
-            System.out.println("Enter the post's ID for the label: ");
-            Long postId = Long.parseLong(ConsoleReader.read());
-
-            LabelCreateDto labelCreateDto = new LabelCreateDto(name, postId);
+            LabelCreateDto labelCreateDto = new LabelCreateDto(name);
             Label savedLabel = labelController.create(labelCreateDto);
 
             System.out.println("INFO: label was successfully saved with id: " + savedLabel.getId());

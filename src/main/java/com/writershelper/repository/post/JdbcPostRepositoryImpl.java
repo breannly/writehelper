@@ -2,9 +2,14 @@ package com.writershelper.repository.post;
 
 import com.writershelper.JdbcConnectionPool;
 import com.writershelper.mapper.PostMapper;
+import com.writershelper.model.Label;
 import com.writershelper.model.Post;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +17,7 @@ public class JdbcPostRepositoryImpl implements PostRepository {
 
     private static final String SAVE_SQL_QUERY = "INSERT INTO posts (p_writer_id, p_content, p_created, p_updated, p_status) " +
             "VALUES (?, ?, ?, ?, ?)";
+    private static final String SAVE_PL_SQL_QUERY = "INSERT INTO post_labels (post_id, label_id) VALUES (?, ?)";
     private static final String UPDATE_SQL_QUERY = "UPDATE posts SET p_content = ?, p_updated = ? WHERE p_id = ?";
     private static final String GET_SQL_QUERY =
             "SELECT * FROM posts AS p " +
@@ -21,27 +27,51 @@ public class JdbcPostRepositoryImpl implements PostRepository {
 
     @Override
     public Post save(Post post) {
-        try (Connection connection = JdbcConnectionPool.getConnection();
-        PreparedStatement statement = connection.prepareStatement(SAVE_SQL_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+        Connection connection = null;
+        try {
+            connection = JdbcConnectionPool.getConnection();
+            connection.setAutoCommit(false);
+            try (PreparedStatement statement1 = connection.prepareStatement(SAVE_SQL_QUERY, Statement.RETURN_GENERATED_KEYS);
+                 PreparedStatement statement2 = connection.prepareStatement(SAVE_PL_SQL_QUERY)) {
 
-            statement.setLong(1, post.getWriterId());
-            statement.setString(2, post.getContent());
-            statement.setObject(3, post.getCreated());
-            statement.setObject(4, post.getUpdated());
-            statement.setString(5, post.getStatus().name());
-            statement.executeUpdate();
+                statement1.setLong(1, post.getWriter().getId());
+                statement1.setString(2, post.getContent());
+                statement1.setObject(3, post.getCreated());
+                statement1.setObject(4, post.getUpdated());
+                statement1.setString(5, post.getStatus().name());
+                statement1.executeUpdate();
 
-            try (ResultSet resultSet = statement.getGeneratedKeys()) {
-                if (resultSet.next()) {
-                    long generatedId = resultSet.getLong(1);
-                    post.setId(generatedId);
+                try (ResultSet resultSet = statement1.getGeneratedKeys()) {
+                    if (resultSet.next()) {
+                        long generatedId = resultSet.getLong(1);
+                        post.setId(generatedId);
+                    }
+                }
+
+                for (Label label : post.getLabels()) {
+                    statement2.setLong(1, post.getId());
+                    statement2.setLong(2, label.getId());
+                    statement2.addBatch();
+                }
+                statement2.executeBatch();
+
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw new RuntimeException("Failed to save post: " + e.getMessage(), e);
+            }
+        } catch (SQLException outerException) {
+            throw new RuntimeException("Failed to establish or manage database connection: " + outerException.getMessage(), outerException);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                } catch (SQLException ignored) {
                 }
             }
-            return post;
-        } catch (SQLException e) {
-            System.err.println("Error: " + e.getMessage());
-            return null;
         }
+        return post;
     }
 
     @Override

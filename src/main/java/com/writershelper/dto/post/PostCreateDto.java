@@ -1,4 +1,6 @@
 package com.writershelper.dto.post;
 
-public record PostCreateDto(String content, Long writerId) {
+import java.util.List;
+
+public record PostCreateDto(String content, Long writerId, List<Long> labels) {
 }

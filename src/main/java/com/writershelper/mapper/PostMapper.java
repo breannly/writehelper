@@ -5,6 +5,7 @@ import com.writershelper.dto.post.PostCreateDto;
 import com.writershelper.model.Label;
 import com.writershelper.model.Post;
 import com.writershelper.model.Status;
+import com.writershelper.model.Writer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,10 +25,17 @@ public class PostMapper {
         return mapItem(rs);
     }
 
-    public static Post map(PostCreateDto request, Date date, Status status) {
+    public static Post map(PostCreateDto request,
+                           List<Label> labels,
+                           Date date,
+                           Status status) {
+        Writer writer = new Writer();
+        writer.setId(request.writerId());
+
         Post post = new Post();
-        post.setWriterId(request.writerId());
+        post.setWriter(writer);
         post.setContent(request.content());
+        post.setLabels(labels);
         post.setCreated(date);
         post.setUpdated(date);
         post.setStatus(status);
@@ -61,7 +69,6 @@ public class PostMapper {
         try {
             Post post = new Post();
             post.setId(rs.getLong("p_id"));
-            post.setWriterId(rs.getLong("p_writer_id"));
             post.setContent(rs.getString("p_content"));
             post.setCreated(rs.getDate("p_created"));
             post.setUpdated(rs.getDate("p_updated"));

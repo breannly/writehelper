@@ -1,23 +1,28 @@
 package com.writershelper.controller;
 
-import com.writershelper.ApplicationManager;
 import com.writershelper.dto.post.PostCreateDto;
 import com.writershelper.dto.post.PostUpdateDto;
 import com.writershelper.exception.ItemNotFoundException;
 import com.writershelper.exception.ValidationException;
 import com.writershelper.mapper.PostMapper;
+import com.writershelper.model.Label;
 import com.writershelper.model.Post;
 import com.writershelper.model.Status;
+import com.writershelper.service.label.LabelService;
 import com.writershelper.service.post.PostService;
 
 import java.util.Date;
+import java.util.List;
 
 public class PostController {
 
     private final PostService postService;
+    private final LabelService labelService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService,
+                          LabelService labelService) {
         this.postService = postService;
+        this.labelService = labelService;
     }
 
     public Post create(PostCreateDto request) {
@@ -25,7 +30,13 @@ public class PostController {
             throw new ValidationException("ERROR: Content cannot be empty");
         }
 
-        Post post = PostMapper.map(request, new Date(), Status.ACTIVE);
+        List<Long> ids = request.labels();
+        List<Label> labels = labelService.get(ids);
+        if (labels.size() != ids.size()) {
+            throw new ValidationException("ERROR: unknown labels");
+        }
+
+        Post post = PostMapper.map(request, labels, new Date(), Status.ACTIVE);
 
         return postService.save(post);
     }

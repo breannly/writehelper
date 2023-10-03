@@ -48,8 +48,9 @@ public class ApplicationManager {
 
     public static PostController getPostController() {
         if (postController == null) {
-            PostService service = getPostService();
-            postController = new PostController(service);
+            PostService postService = getPostService();
+            LabelService labelService = getLabelService();
+            postController = new PostController(postService, labelService);
             return postController;
         }
         return postController;

@@ -4,9 +4,13 @@ import com.writershelper.model.Label;
 import com.writershelper.model.Status;
 import com.writershelper.repository.label.LabelRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class LabelServiceImpl implements LabelService {
+
+    private static final Predicate<Label> IS_ACTIVE = label -> label.getStatus().equals(Status.ACTIVE);
 
     private final LabelRepository labelRepository;
 
@@ -16,8 +20,14 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public Label get(Long id) {
-        Optional<Label> post = labelRepository.get(id);
-        return post.filter(l -> !l.getStatus().equals(Status.DELETED)).orElse(null);
+        Optional<Label> label = labelRepository.get(id);
+        return label.filter(IS_ACTIVE).orElse(null);
+    }
+
+    @Override
+    public List<Label> get(List<Long> ids) {
+        List<Label> labels = labelRepository.get(ids);
+        return labels.stream().filter(IS_ACTIVE).toList();
     }
 
     @Override

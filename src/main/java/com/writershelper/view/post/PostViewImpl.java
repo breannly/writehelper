@@ -9,6 +9,8 @@ import com.writershelper.model.Post;
 import com.writershelper.utils.ConsoleReader;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class PostViewImpl implements PostView {
 
@@ -27,7 +29,10 @@ public class PostViewImpl implements PostView {
             System.out.println("Enter the author's ID for the post: ");
             Long writerId = Long.parseLong(ConsoleReader.read());
 
-            PostCreateDto postCreateDto = new PostCreateDto(content, writerId);
+            System.out.println("Enter the label's ID separated by a comma:");
+            List<Long> labels = Arrays.stream(ConsoleReader.read().split(",")).map(Long::parseLong).toList();
+
+            PostCreateDto postCreateDto = new PostCreateDto(content, writerId, labels);
             Post savedPost = postController.create(postCreateDto);
 
             System.out.println("INFO: post was successfully saved with id: " + savedPost.getId());

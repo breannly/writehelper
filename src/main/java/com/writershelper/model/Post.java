@@ -6,11 +6,10 @@ import java.util.List;
 public class Post implements Identifiable<Long>{
 
     private Long id;
-    private Long writerId;
+    private Writer writer;
     private String content;
     private Date created;
     private Date updated;
-
     private List<Label> labels;
     private Status status;
 
@@ -23,12 +22,12 @@ public class Post implements Identifiable<Long>{
         this.id = id;
     }
 
-    public Long getWriterId() {
-        return writerId;
+    public Writer getWriter() {
+        return writer;
     }
 
-    public void setWriterId(Long writerId) {
-        this.writerId = writerId;
+    public void setWriter(Writer writer) {
+        this.writer = writer;
     }
 
     public String getContent() {
@@ -75,12 +74,11 @@ public class Post implements Identifiable<Long>{
     public String toString() {
         return "Post{" +
                 "id=" + id +
-                ", writerId=" + writerId +
-                ", content='" + content + '\'' +
+                ", content=" + content +
                 ", created=" + created +
                 ", updated=" + updated +
                 ", labels=" + labels +
                 ", status=" + status +
-                '}';
+                "}";
     }
 }

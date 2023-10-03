@@ -46,6 +46,7 @@ public class WriterMapper {
                 if (postId != 0L) {
                     Post post = postsStore.computeIfAbsent(postId, id -> {
                         Post newPost = PostMapper.lazyMap(rs);
+                        newPost.setWriter(writer);
                         writer.getPosts().add(newPost);
                         return newPost;
                     });
