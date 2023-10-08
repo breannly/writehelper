@@ -1,17 +1,23 @@
 package com.writershelper.controller;
 
+import com.writershelper.ApplicationManager;
 import com.writershelper.dto.writer.WriterCreateDto;
 import com.writershelper.dto.writer.WriterUpdateDto;
 import com.writershelper.exception.ItemNotFoundException;
 import com.writershelper.exception.ValidationException;
+import com.writershelper.mapper.WriterMapper;
 import com.writershelper.model.Status;
 import com.writershelper.model.Writer;
-import com.writershelper.repository.writer.WriterRepository;
-import com.writershelper.repository.writer.WriterRepositoryImpl;
+import com.writershelper.service.writer.WriterService;
+import com.writershelper.service.writer.WriterServiceImpl;
 
 public class WriterController {
 
-    private final WriterRepository writerRepository = new WriterRepositoryImpl();
+    private final WriterService writerService;
+
+    public WriterController(WriterService writerService) {
+        this.writerService = writerService;
+    }
 
     public Writer create(WriterCreateDto request) {
         if (request.firstName() == null || request.firstName().isBlank()) {
@@ -21,22 +27,13 @@ public class WriterController {
             throw new ValidationException("ERROR: last name cannot be empty");
         }
 
-        Writer writer = createWriter(request.firstName(), request.lastName());
-        writer = writerRepository.save(writer);
+        Writer writer = WriterMapper.map(request, Status.ACTIVE);
 
-        return writer;
-    }
-
-    private Writer createWriter(String firstName, String lastName) {
-        Writer writer = new Writer();
-        writer.setFirstName(firstName);
-        writer.setLastName(lastName);
-        writer.setStatus(Status.ACTIVE);
-        return writer;
+        return writerService.save(writer);
     }
 
     public Writer get(Long id) {
-        Writer writer = writerRepository.get(id);
+        Writer writer = writerService.get(id);
         if (writer == null) {
             throw new ItemNotFoundException("ERROR: writer not found");
         }
@@ -52,27 +49,25 @@ public class WriterController {
             throw new ValidationException("ERROR: last name cannot be empty");
         }
 
-        Writer writer = writerRepository.get(request.writerId());
+        Writer writer = writerService.get(request.writerId());
         if (writer == null) {
             throw new ItemNotFoundException("ERROR: writer not found");
         }
 
         writer.setFirstName(request.firstName());
         writer.setLastName(request.lastName());
-        writer = writerRepository.save(writer);
 
-        return writer;
+        return writerService.save(writer);
     }
 
     public Writer delete(Long id) {
-        Writer writer = writerRepository.get(id);
+        Writer writer = writerService.get(id);
         if (writer == null) {
             throw new ItemNotFoundException("ERROR: writer not found");
         }
 
         writer.setStatus(Status.DELETED);
-        writer = writerRepository.save(writer);
 
-        return writer;
+        return writerService.save(writer);
     }
 }

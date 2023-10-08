@@ -12,7 +12,11 @@ import java.io.IOException;
 
 public class WriterViewImpl implements WriterView {
 
-    private final WriterController writerController = new WriterController();
+    private final WriterController writerController;
+
+    public WriterViewImpl(WriterController writerController) {
+        this.writerController = writerController;
+    }
 
     @Override
     public void create() {
@@ -26,6 +30,7 @@ public class WriterViewImpl implements WriterView {
             Writer savedWriter = writerController.create(writerCreateDto);
 
             System.out.println("INFO: writer was successfully saved with id: " + savedWriter.getId());
+            System.out.println(savedWriter);
         } catch (NumberFormatException e) {
             System.err.println("ERROR: Invalid post ID format");
         } catch (IOException e) {
@@ -43,8 +48,7 @@ public class WriterViewImpl implements WriterView {
 
             Writer writer = writerController.get(writerId);
 
-            System.out.println("Author's name is " + writer.getFirstName());
-            System.out.println("Author's last name is " + writer.getLastName());
+            System.out.println(writer);
         } catch (NumberFormatException e) {
             System.err.println("ERROR: Invalid post ID format");
         } catch (IOException e) {
@@ -65,8 +69,10 @@ public class WriterViewImpl implements WriterView {
             String lastName = ConsoleReader.read();
 
             WriterUpdateDto writerUpdateDto = new WriterUpdateDto(writerId, firstName, lastName);
-            writerController.update(writerUpdateDto);
+            Writer updatedWriter = writerController.update(writerUpdateDto);
+
             System.out.println("INFO: writer was successfully updated");
+            System.out.println(updatedWriter);
         } catch (NumberFormatException e) {
             System.err.println("ERROR: Invalid post ID format");
         } catch (IOException e) {
@@ -82,8 +88,10 @@ public class WriterViewImpl implements WriterView {
             System.out.println("Enter the writer's id: ");
             Long writerId = Long.parseLong(ConsoleReader.read());
 
-            writerController.delete(writerId);
+            Writer deletedWriter = writerController.delete(writerId);
+
             System.out.println("INFO: writer was successfully deleted");
+            System.out.println(deletedWriter);
         } catch (NumberFormatException e) {
             System.err.println("ERROR: Invalid post ID format");
         } catch (IOException e) {

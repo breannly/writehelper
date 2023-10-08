@@ -1,13 +1,16 @@
 package com.writershelper.repository;
 
-import com.writershelper.model.Writer;
-
-import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 public interface GenericRepository<T, ID> {
 
     T save(T t);
 
-    T get(ID id);
+    T update(T t);
+
+    List<T> getAll();
+
+    Optional<T> get(ID id);
 
 }

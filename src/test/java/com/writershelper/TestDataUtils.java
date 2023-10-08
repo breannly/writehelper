@@ -11,6 +11,7 @@ public class TestDataUtils {
 
     public static Writer createWriter() {
         Writer writer = new Writer();
+        writer.setId(System.currentTimeMillis());
         writer.setFirstName("first_name_test");
         writer.setLastName("last_name_test");
         writer.setStatus(Status.ACTIVE);
@@ -19,6 +20,7 @@ public class TestDataUtils {
 
     public static Post createPost() {
         Post post = new Post();
+        post.setId(System.currentTimeMillis());
         post.setCreated(new Date());
         post.setUpdated(new Date());
         post.setContent("post_content_test");
@@ -28,6 +30,7 @@ public class TestDataUtils {
 
     public static Label createLabel() {
         Label label = new Label();
+        label.setId(System.currentTimeMillis());
         label.setName("label_name_test");
         label.setStatus(Status.ACTIVE);
         return label;

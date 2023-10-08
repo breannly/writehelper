@@ -6,6 +6,7 @@ import java.util.List;
 public class Post implements Identifiable<Long>{
 
     private Long id;
+    private Writer writer;
     private String content;
     private Date created;
     private Date updated;
@@ -19,6 +20,14 @@ public class Post implements Identifiable<Long>{
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Writer getWriter() {
+        return writer;
+    }
+
+    public void setWriter(Writer writer) {
+        this.writer = writer;
     }
 
     public String getContent() {
@@ -59,5 +68,17 @@ public class Post implements Identifiable<Long>{
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", content=" + content +
+                ", created=" + created +
+                ", updated=" + updated +
+                ", labels=" + labels +
+                ", status=" + status +
+                "}";
     }
 }

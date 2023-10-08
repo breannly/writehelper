@@ -50,4 +50,15 @@ public class Writer implements Identifiable<Long>{
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Writer{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", posts=" + posts +
+                ", status=" + status +
+                '}';
+    }
 }
