@@ -1,5 +1,6 @@
 package com.writershelper;
 
+import com.writershelper.utils.HibernateSessionFactoryUtil;
 import com.writershelper.view.common.CommonView;
 import liquibase.Contexts;
 import liquibase.LabelExpression;
@@ -12,6 +13,7 @@ public class Main {
     public static void main(String[] args) {
         startLiquibase();
         CommonView.run();
+        HibernateSessionFactoryUtil.shutdown();
     }
 
     private static void startLiquibase() {
