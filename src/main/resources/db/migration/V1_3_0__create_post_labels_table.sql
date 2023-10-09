@@ -5,4 +5,3 @@ CREATE TABLE post_labels (
     FOREIGN KEY (label_id) REFERENCES labels(id),
     CONSTRAINT post_label_unique UNIQUE (post_id, label_id)
 );
-GO

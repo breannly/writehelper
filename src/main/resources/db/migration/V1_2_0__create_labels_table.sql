@@ -4,4 +4,3 @@ CREATE TABLE IF NOT EXISTS labels (
     status VARCHAR(255),
     PRIMARY KEY (id)
 );
-GO

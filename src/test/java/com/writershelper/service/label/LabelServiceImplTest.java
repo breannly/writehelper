@@ -5,8 +5,8 @@ import com.writershelper.model.Label;
 import com.writershelper.model.Status;
 import com.writershelper.repository.label.JdbcLabelRepositoryImpl;
 import com.writershelper.repository.label.LabelRepository;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.mockito.Mockito;
 
 import java.util.Optional;
@@ -23,7 +23,7 @@ public class LabelServiceImplTest {
 
         Label gotLabel = labelService.get(label.getId());
 
-        Assertions.assertNotNull(gotLabel);
+        Assert.assertNotNull(gotLabel);
     }
 
     @Test
@@ -34,7 +34,7 @@ public class LabelServiceImplTest {
 
         Label gotLabel = labelService.get(label.getId());
 
-        Assertions.assertNull(gotLabel);
+        Assert.assertNull(gotLabel);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class LabelServiceImplTest {
 
         Label savedLabel = labelService.save(label);
 
-        Assertions.assertNotNull(savedLabel);
+        Assert.assertNotNull(savedLabel);
         Mockito.verify(labelRepository, Mockito.times(1)).save(label);
         Mockito.verify(labelRepository, Mockito.never()).update(label);
     }
@@ -59,7 +59,7 @@ public class LabelServiceImplTest {
 
         Label updatedLabel = labelService.save(label);
 
-        Assertions.assertNotNull(updatedLabel);
+        Assert.assertNotNull(updatedLabel);
         Mockito.verify(labelRepository, Mockito.never()).save(label);
         Mockito.verify(labelRepository, Mockito.times(1)).update(label);
     }

@@ -8,4 +8,3 @@ CREATE TABLE IF NOT EXISTS posts (
     PRIMARY KEY(id),
     FOREIGN KEY(writer_id) REFERENCES writers(id)
 );
-GO

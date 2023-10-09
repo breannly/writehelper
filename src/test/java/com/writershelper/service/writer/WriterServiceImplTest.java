@@ -5,8 +5,8 @@ import com.writershelper.model.Status;
 import com.writershelper.model.Writer;
 import com.writershelper.repository.writer.JdbcWriterRepositoryImpl;
 import com.writershelper.repository.writer.WriterRepository;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.mockito.Mockito;
 
 import java.util.Optional;
@@ -23,7 +23,7 @@ public class WriterServiceImplTest {
 
         Writer gotWriter = writerService.get(writer.getId());
 
-        Assertions.assertNotNull(gotWriter);
+        Assert.assertNotNull(gotWriter);
     }
 
     @Test
@@ -34,7 +34,7 @@ public class WriterServiceImplTest {
 
         Writer gotWriter = writerService.get(writer.getId());
 
-        Assertions.assertNull(gotWriter);
+        Assert.assertNull(gotWriter);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class WriterServiceImplTest {
 
         Writer savedWriter = writerService.save(writer);
 
-        Assertions.assertNotNull(savedWriter);
+        Assert.assertNotNull(savedWriter);
         Mockito.verify(writerRepository, Mockito.times(1)).save(writer);
         Mockito.verify(writerRepository, Mockito.never()).update(writer);
     }
@@ -59,7 +59,7 @@ public class WriterServiceImplTest {
 
         Writer updatedWriter = writerService.save(writer);
 
-        Assertions.assertNotNull(updatedWriter);
+        Assert.assertNotNull(updatedWriter);
         Mockito.verify(writerRepository, Mockito.never()).save(writer);
         Mockito.verify(writerRepository, Mockito.times(1)).update(writer);
     }

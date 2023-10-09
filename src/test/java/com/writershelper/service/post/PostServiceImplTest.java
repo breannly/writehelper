@@ -5,8 +5,8 @@ import com.writershelper.model.Post;
 import com.writershelper.model.Status;
 import com.writershelper.repository.post.JdbcPostRepositoryImpl;
 import com.writershelper.repository.post.PostRepository;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.mockito.Mockito;
 
 import java.util.Optional;
@@ -23,7 +23,7 @@ public class PostServiceImplTest {
 
         Post gotPost = postService.get(post.getId());
 
-        Assertions.assertNotNull(gotPost);
+        Assert.assertNotNull(gotPost);
     }
 
     @Test
@@ -34,7 +34,7 @@ public class PostServiceImplTest {
 
         Post gotPost = postService.get(post.getId());
 
-        Assertions.assertNull(gotPost);
+        Assert.assertNull(gotPost);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class PostServiceImplTest {
 
         Post savedPost = postService.save(post);
 
-        Assertions.assertNotNull(savedPost);
+        Assert.assertNotNull(savedPost);
         Mockito.verify(postRepository, Mockito.times(1)).save(post);
         Mockito.verify(postRepository, Mockito.never()).update(post);
     }
@@ -59,7 +59,7 @@ public class PostServiceImplTest {
 
         Post updatedPost = postService.save(post);
 
-        Assertions.assertNotNull(updatedPost);
+        Assert.assertNotNull(updatedPost);
         Mockito.verify(postRepository, Mockito.never()).save(post);
         Mockito.verify(postRepository, Mockito.times(1)).update(post);
     }

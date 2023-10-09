@@ -1,20 +1,12 @@
 package com.writershelper.repository.post;
 
 import com.google.common.base.Throwables;
-import com.writershelper.JdbcConnectionPool;
-import com.writershelper.mapper.PostMapper;
-import com.writershelper.model.Label;
 import com.writershelper.model.Post;
 import com.writershelper.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 

@@ -5,4 +5,3 @@ CREATE TABLE IF NOT EXISTS writers (
     status VARCHAR(255),
     PRIMARY KEY(id)
 );
-GO
