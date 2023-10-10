@@ -1,10 +1,8 @@
 CREATE TABLE IF NOT EXISTS posts (
-    id BIGINT NOT NULL AUTO_INCREMENT,
-    writer_id BIGINT NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
+    writer_id BIGINT NOT NULL REFERENCES writers(id),
     content VARCHAR(255),
     created TIMESTAMP,
     updated TIMESTAMP,
-    status VARCHAR(255),
-    PRIMARY KEY(id),
-    FOREIGN KEY(writer_id) REFERENCES writers(id)
+    status VARCHAR(255)
 );

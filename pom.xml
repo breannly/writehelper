@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- db -->
-        <sql-driver.version>8.0.33</sql-driver.version>
+        <db-driver.version>42.6.0</db-driver.version>
         <db-migration.version>4.0.3</db-migration.version>
         <hibernate-version>6.3.1.Final</hibernate-version>
 
@@ -23,17 +23,17 @@
         <guava.version>32.1.2-jre</guava.version>
 
         <!-- flyway -->
-        <flyway.user>root</flyway.user>
+        <flyway.user>postgres</flyway.user>
         <flyway.password>root</flyway.password>
-        <flyway.url>jdbc:mysql://localhost:3306/writerhelper</flyway.url>
+        <flyway.url>jdbc:postgresql://localhost:5432/writerhelper</flyway.url>
     </properties>
 
     <dependencies>
         <!-- db -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${sql-driver.version}</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${db-driver.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>

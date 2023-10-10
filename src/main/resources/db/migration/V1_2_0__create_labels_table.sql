@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS labels (
-    id BIGINT NOT NULL AUTO_INCREMENT,
+    id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255),
-    status VARCHAR(255),
-    PRIMARY KEY (id)
+    status VARCHAR(255)
 );
