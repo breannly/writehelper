@@ -1,16 +1,42 @@
 package com.writershelper.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Table(name = "posts")
 public class Post implements Identifiable<Long>{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne
+    @JoinColumn(name = "writer_id")
     private Writer writer;
     private String content;
     private Date created;
     private Date updated;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "post_labels",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "label_id")
+    )
     private List<Label> labels;
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Override

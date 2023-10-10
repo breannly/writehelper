@@ -1,13 +1,32 @@
 package com.writershelper.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
 import java.util.List;
 
-public class Writer implements Identifiable<Long>{
+@Entity
+@Table(name = "writers")
+public class Writer implements Identifiable<Long> {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "second_name")
     private String lastName;
+    @OneToMany(mappedBy = "writer", fetch = FetchType.EAGER)
     private List<Post> posts;
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Override

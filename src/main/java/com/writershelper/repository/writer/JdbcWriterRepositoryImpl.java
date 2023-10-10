@@ -1,92 +1,92 @@
 package com.writershelper.repository.writer;
 
-import com.writershelper.JdbcConnectionPool;
-import com.writershelper.mapper.WriterMapper;
+import com.google.common.base.Throwables;
 import com.writershelper.model.Writer;
+import com.writershelper.utils.HibernateSessionFactoryUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
 public class JdbcWriterRepositoryImpl implements WriterRepository {
 
-    private static final String SAVE_SQL_QUERY = "INSERT INTO writers (w_first_name, w_second_name, w_status)" +
-            " VALUES (?, ?, ?)";
-    private static final String GET_SQL_QUERY =
-            "SELECT * FROM writers AS w " +
-            "LEFT JOIN posts AS p ON w.w_id = p.p_writer_id " +
-            "LEFT JOIN labels AS l ON p.p_id = l.l_post_id " +
-            "WHERE w_id = ?";
-    private static final String GET_ALL_SQL_QUERY = "SELECT * FROM writers";
-    private static final String UPDATE_SQL_QUERY = "UPDATE writers" +
-            " SET w_first_name = ?, w_second_name = ?, w_status = ? WHERE w_id = ?";
+    private static final String GET_ALL_HQL = "FROM Writer";
 
     @Override
     public Writer save(Writer writer) {
-        try (Connection connection = JdbcConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SAVE_SQL_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+        Transaction transaction = null;
+        try (Session session =  HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
 
-            statement.setString(1, writer.getFirstName());
-            statement.setString(2, writer.getLastName());
-            statement.setString(3, writer.getStatus().name());
-            statement.executeUpdate();
+            session.persist(writer);
 
-            try (ResultSet resultSet = statement.getGeneratedKeys()) {
-                if (resultSet.next()) {
-                    long generatedId = resultSet.getLong(1);
-                    writer.setId(generatedId);
-                }
-            }
+            transaction.commit();
             return writer;
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            System.err.println(Throwables.getStackTraceAsString(e));
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw new RuntimeException("Failed to save writer", e);
         }
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public Writer update(Writer writer) {
-        try (Connection connection = JdbcConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(UPDATE_SQL_QUERY)) {
+        Transaction transaction = null;
+        try (Session session =  HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
 
-            statement.setString(1, writer.getFirstName());
-            statement.setString(2, writer.getLastName());
-            statement.setString(3, writer.getStatus().name());
-            statement.setLong(4, writer.getId());
-            statement.executeUpdate();
+            session.update(writer);
 
+            transaction.commit();
             return writer;
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            System.err.println(Throwables.getStackTraceAsString(e));
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw new RuntimeException("Failed to update writer", e);
         }
     }
 
     @Override
     public List<Writer> getAll() {
-        try (Connection connection = JdbcConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_ALL_SQL_QUERY)) {
+        Transaction transaction = null;
+        try (Session session =  HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                return WriterMapper.mapList(resultSet);
-            }
+            Query<Writer> query = session.createQuery(GET_ALL_HQL, Writer.class);
+
+            transaction.commit();
+            return query.list();
         } catch (Exception e) {
-            throw new RuntimeException("Failed to get all writers", e);
+            System.out.println(Throwables.getStackTraceAsString(e));
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new RuntimeException("Failed to get writer", e);
         }
     }
 
     @Override
     public Optional<Writer> get(Long id) {
-        try (Connection connection = JdbcConnectionPool.getConnection();
-            PreparedStatement statement = connection.prepareStatement(GET_SQL_QUERY)) {
-            statement.setLong(1, id);
+        Transaction transaction = null;
+        try (Session session =  HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                return WriterMapper.map(resultSet);
-            }
+            Writer writer = session.get(Writer.class, id);
+
+            transaction.commit();
+            return Optional.ofNullable(writer);
         } catch (Exception e) {
+            System.out.println(Throwables.getStackTraceAsString(e));
+            if (transaction != null) {
+                transaction.rollback();
+            }
             throw new RuntimeException("Failed to get writer", e);
         }
     }
